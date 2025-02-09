@@ -1,7 +1,10 @@
 {
     "peacock.color": "#431757",
     "files.associations": {
-        "mpi.h": "c"
+        "mpi.h": "c",
+        "array": "c",
+        "string_view": "c",
+        "initializer_list": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
