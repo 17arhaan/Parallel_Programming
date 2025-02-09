@@ -2,7 +2,7 @@
 # Parallel Programming using C
 
 This repository contains various examples and implementations of parallel programming using C, specifically focusing on parallel computer architecture and programming techniques using the **Message Passing Interface (MPI)**. The goal is to demonstrate different parallel computing paradigms and their applications in C programming.
-
+[Functions](#functions.md)
 ## Table of Contents
 
 1. [Introduction](#introduction)
