@@ -17,16 +17,15 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     if (rank == 0) {
-        printf("Enter the 3x3 matrix:\n");
+        printf("Enter the 3x3 matrix:- \n");
         for (i = 0; i < N; i++) {
             for (j = 0; j < N; j++) {
                 scanf("%d", &matrix[i][j]);
             }
         }
-
-        printf("Enter the element to search: ");
-        scanf("%d", &searchElement);
     }
+    // printf("Enter the element to search: ");
+    scanf("%d", &searchElement);
     MPI_Bcast(&searchElement, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(matrix, N * N, MPI_INT, 0, MPI_COMM_WORLD);
     int startRow = rank;
