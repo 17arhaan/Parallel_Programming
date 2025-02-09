@@ -1,6 +1,4 @@
 
----
-
 # **Functions**
 
 ## **1. MPI_Init**
