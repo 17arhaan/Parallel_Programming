@@ -12,11 +12,11 @@ int main(int argc,char* argv[]){
         printf("Enter Number : ");
         fflush(stdout);
         scanf("%d",&num);
-        MPI_Send(&num , 1 , MPI_INT , 1 , 1 , MPI_COMM_WORLD);
+        MPI_Send(&num , 1 , MPI_INT , 1 , 0 , MPI_COMM_WORLD);
         fflush(stdout);
         fprintf(stdout,"Process 0 : message sent..\n");
     } else {
-        MPI_Recv( &num, 1 , MPI_INT , 0 , 1, MPI_COMM_WORLD, &status);
+        MPI_Recv( &num, 1 , MPI_INT , 0 , 0, MPI_COMM_WORLD, &status);
         fflush(stdout);
         fprintf(stdout,"Process 1 : %d  (message) recieved..\n",num);
         MPI_Finalize();
