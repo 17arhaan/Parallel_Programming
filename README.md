@@ -6,6 +6,7 @@ This repository contains various examples and implementations of parallel progra
 ## Functions ---> [Functions](functions.md)
 
 </br>
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
