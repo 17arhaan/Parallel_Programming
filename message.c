@@ -25,7 +25,8 @@ int main(int argc , char*argv[]) {
 
     if (rank == 0) {
         printf("Enter Message: ");
-        fgets(msg, MAX, stdin);
+        fflush(stdout);
+        gets(msg);
         MPI_Ssend(msg, MAX, MPI_CHAR, 1, 1, MPI_COMM_WORLD);
         printf("Process 0 sent: %s\n", msg);
 
