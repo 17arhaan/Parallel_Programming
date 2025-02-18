@@ -1,50 +1,51 @@
 #include <stdio.h>
 #include <cuda.h>
-#define THREADS_PER_BLOCK 256
-__global__ void selectionSortRows(float *matrix, int cols, int rows) {
-    int row = blockIdx.x * blockDim.x + threadIdx.x;
-    if (row < rows) {
-        for (int i = 0; i < cols - 1; i++) {
-            int minIdx = i;
-            for (int j = i + 1; j < cols; j++) {
-                if (matrix[row * cols + j] < matrix[row * cols + minIdx]) {
-                    minIdx = j;
+
+__global__ void selection_sort(int *arr, int n) {
+    int tid = threadIdx.x;
+    
+    if (tid == 0) { 
+        for (int i = 0; i < n - 1; i++) {
+            int min_idx = i;
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[min_idx]) {
+                    min_idx = j;
                 }
             }
-            float temp = matrix[row * cols + i];
-            matrix[row * cols + i] = matrix[row * cols + minIdx];
-            matrix[row * cols + minIdx] = temp;
+            int temp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = temp;
         }
     }
 }
+
 int main() {
-    int rows, cols;
-    printf("Enter Dimensions : ");
-    scanf("%d %d", &rows, &cols);
+    int N;
 
-    float *matrix, *d_matrix;
-    size_t size = rows * cols * sizeof(float);
-    matrix = (float*)malloc(size);
+    printf("Enter the number of elements in the array: ");
+    scanf("%d", &N);
 
-    printf("Enter Elements :\n");
-    for (int i = 0; i < rows * cols; i++) scanf("%f", &matrix[i]);
+    int h_arr[N];
 
-    cudaMalloc((void**)&d_matrix, size);
-    cudaMemcpy(d_matrix, matrix, size, cudaMemcpyHostToDevice);
-
-    int blocksPerGrid = (rows + THREADS_PER_BLOCK - 1) / THREADS_PER_BLOCK;
-    selectionSortRows<<<blocksPerGrid, THREADS_PER_BLOCK>>>(d_matrix, cols, rows);
-
-    cudaMemcpy(matrix, d_matrix, size, cudaMemcpyDeviceToHost);
-
-    printf("Sorted Matrix --->\n");
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            printf("%f ", matrix[i * cols + j]);
-        }
-        printf("\n");
+    printf("Enter %d elements:\n", N);
+    for (int i = 0; i < N; i++) {
+        scanf("%d", &h_arr[i]);
     }
-    free(matrix);
-    cudaFree(d_matrix);
+
+    int *d_arr;
+    cudaMalloc(&d_arr, N * sizeof(int));
+    cudaMemcpy(d_arr, h_arr, N * sizeof(int), cudaMemcpyHostToDevice);
+
+    selection_sort<<<1, 1>>>(d_arr, N);
+
+    cudaMemcpy(h_arr, d_arr, N * sizeof(int), cudaMemcpyDeviceToHost);
+
+    printf("Sorted Array:\n");
+    for (int i = 0; i < N; i++) {
+        printf("%d ", h_arr[i]);
+    }
+    printf("\n");
+
+    cudaFree(d_arr);
     return 0;
 }
